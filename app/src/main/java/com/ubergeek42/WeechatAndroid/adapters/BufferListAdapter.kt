@@ -226,9 +226,9 @@ private val sortByHotCountAndNumberComparator = Comparator<VisualBuffer> { left,
     if (highlightDiff != 0) return@Comparator highlightDiff
 
     val pmLeft = if (left.type == Buffer.PRIVATE) left.unreads else 0
-    val pmRight = if (right.type == Buffer.PRIVATE) left.unreads else 0
+    val pmRight = if (right.type == Buffer.PRIVATE) right.unreads else 0
     val pmDiff = pmRight - pmLeft
-    if (pmDiff != 0) return@Comparator pmRight - pmLeft
+    if (pmDiff != 0) return@Comparator pmDiff
 
     left.number - right.number
 }
@@ -239,9 +239,9 @@ private val sortByHotAndMessageCountComparator = Comparator<VisualBuffer> { left
     if (highlightDiff != 0) return@Comparator highlightDiff
 
     val pmLeft = if (left.type == Buffer.PRIVATE) left.unreads else 0
-    val pmRight = if (right.type == Buffer.PRIVATE) left.unreads else 0
+    val pmRight = if (right.type == Buffer.PRIVATE) right.unreads else 0
     val pmDiff = pmRight - pmLeft
-    if (pmDiff != 0) return@Comparator pmRight - pmLeft
+    if (pmDiff != 0) return@Comparator pmDiff
 
     left.unreads - right.unreads
 }
