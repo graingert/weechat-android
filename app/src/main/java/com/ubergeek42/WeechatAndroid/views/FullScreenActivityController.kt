@@ -46,7 +46,8 @@ fun onWeechatActivityCreated(activity: WeechatActivity) {
 
     // todo use WindowCompat.setDecorFitsSystemWindows(window, false)
     // todo needs api 30+? and/or androidx.core:core-ktx:1.5.0-beta02
-    rootView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
+    rootView.systemUiVisibility = rootView.systemUiVisibility or
+            View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
             View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
 
     rootView.setOnApplyWindowInsetsListener listener@{ _, insets ->
