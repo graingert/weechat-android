@@ -115,7 +115,7 @@ inline class LineSpec(val entry: HdataEntry) {
     companion object {
         fun makeLastLinesRequest(id: String, pointer: Long, numberOfLines: Int) =
                 "($id) hdata buffer:${pointer.as0x}/own_lines/last_line(-$numberOfLines)/data " +
-                "displayed,prefix,message,highlight,notify,tags_array"
+                "date,displayed,prefix,message,highlight,notify,tags_array"
     }
 
     inline fun toLine(): Line {
