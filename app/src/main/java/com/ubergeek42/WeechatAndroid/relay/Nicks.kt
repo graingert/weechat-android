@@ -41,7 +41,7 @@ internal class Nicks {
     fun replaceNicks(nicks: Collection<Nick>) {
         this.nicks.clear()
         this.nicks.addAll(nicks)
-        status = Status.Init
+        status = Status.Ready
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -72,10 +72,10 @@ internal class Nicks {
         }
     }
 
-    fun sortNicksByLines(it: Iterator<Line>) {
+    fun sortNicksByLines(iterator: Iterator<Line>) {
         val nameToPosition = mutableMapOf<String, Int>()
 
-        it.forEach { line ->
+        iterator.forEach { line ->
             if (line.type === LineSpec.Type.IncomingMessage) {
                 val name = line.nick
                 if (name != null && !nameToPosition.containsKey(name)) {
@@ -89,11 +89,7 @@ internal class Nicks {
             val r = nameToPosition[right.name] ?: Int.MAX_VALUE
             l - r
         }
-
-        // sorting nicks means that all nicks have been fetched
-        status = Status.Ready
     }
-
 }
 
 
