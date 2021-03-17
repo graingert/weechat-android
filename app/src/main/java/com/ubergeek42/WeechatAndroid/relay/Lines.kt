@@ -152,15 +152,17 @@ class Lines {
     fun rememberCurrentSkipsOffset() {
         skipFilteredOffset = skipFiltered
         skipUnfilteredOffset = skipUnfiltered
-        if (unfiltered.size > 0) lastSeenLine = unfiltered.last.pointer
+        if (unfiltered.size > 0) _lastSeenLine = unfiltered.last.pointer
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
-    var lastSeenLine = -1L
-        set(value) {
+    private var _lastSeenLine = -1L
+    var lastSeenLine: Long
+        get() = _lastSeenLine
+        set(pointer) {
             if (!status.ready()) {
-                field = value
+                _lastSeenLine = pointer
                 setSkipsUsingPointer()
             }
         }
@@ -170,7 +172,7 @@ class Lines {
         var indexUnfiltered = 0
 
         unfiltered.descendingIterator().forEach { line ->
-            if (line.pointer == lastSeenLine) {
+            if (line.pointer == _lastSeenLine) {
                 skipFiltered = indexFiltered
                 skipUnfiltered = indexUnfiltered
                 return
@@ -179,6 +181,9 @@ class Lines {
             indexUnfiltered++
             if (line.isVisible) indexFiltered++
         }
+
+        skipFiltered = -1
+        skipUnfiltered = -1
     }
 }
 
