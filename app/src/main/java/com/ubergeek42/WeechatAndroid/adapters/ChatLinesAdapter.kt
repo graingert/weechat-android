@@ -40,6 +40,7 @@ import com.ubergeek42.WeechatAndroid.upload.i
 import com.ubergeek42.WeechatAndroid.upload.main
 import com.ubergeek42.WeechatAndroid.utils.AnimatedRecyclerView
 import com.ubergeek42.WeechatAndroid.utils.Toaster
+import com.ubergeek42.WeechatAndroid.utils.forEachReversedIndexed
 import com.ubergeek42.WeechatAndroid.utils.isAnyOf
 import com.ubergeek42.WeechatAndroid.utils.ulet
 import com.ubergeek42.WeechatAndroid.views.LineView
@@ -271,21 +272,17 @@ class ChatLinesAdapter @MainThread constructor(
     }
 
     private fun findHotLine(): Int {
-        return buffer?.let { buffer ->
-            var skip = buffer.hotCount
+        var skip = buffer?.hotCount ?: 0
+        if (skip == 0) return HOT_LINE_NOT_PRESENT
 
-            if (skip == 0) return HOT_LINE_NOT_PRESENT
-
-            _lines.asReversed().forEachIndexed { index, line ->
-                if (line.notify.isAnyOf(LineSpec.NotifyLevel.Highlight,
-                                        LineSpec.NotifyLevel.Private)) {
-                    skip--
-                    if (skip == 0) return index
-                }
+        lines.forEachReversedIndexed { index, line ->
+            if (line.notify.isAnyOf(LineSpec.NotifyLevel.Highlight,
+                                    LineSpec.NotifyLevel.Private)) {
+                if (--skip == 0) return index
             }
+        }
 
-            return HOT_LINE_LOST
-        } ?: HOT_LINE_NOT_PRESENT
+        return HOT_LINE_LOST
     }
 
     @MainThread fun findPositionByPointer(pointer: Long): Int {
