@@ -689,7 +689,6 @@ class WeechatActivity : AppCompatActivity(), CutePageChangeListener, BufferListC
         })
     }
 
-    // todo extract preference
     @MainThread fun enableDisableExclusionRects() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q || !slidy) return
 
