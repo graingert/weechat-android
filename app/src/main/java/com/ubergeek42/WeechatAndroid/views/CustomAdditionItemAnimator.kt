@@ -231,7 +231,7 @@ object FlickeringAnimationProvider : AnimationProvider {
         animator.interpolator = FlickeringInterpolator
         animator.duration = LONG
         val otherAnimationsDelay = animationDurations.removeDuration +
-                maxOf(animationDurations.changeDuration, animationDurations.removeDuration)
+                maxOf(animationDurations.changeDuration, animationDurations.moveDuration)
         animator.startDelay = otherAnimationsDelay + Random.nextLong(LONG / 6)
     }
 }
