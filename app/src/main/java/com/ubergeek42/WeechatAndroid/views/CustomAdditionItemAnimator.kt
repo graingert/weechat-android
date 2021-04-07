@@ -95,7 +95,7 @@ class CustomAdditionItemAnimator : DefaultItemAnimator() {
         }
 
         pendingRegularMoves.forEach { holder ->
-            animateMoveImpl(holder, removeDuration)
+            animateMoveImpl(holder, animationDurations)
         }
 
         pendingAdditions.forEach { holder ->
@@ -119,11 +119,11 @@ class CustomAdditionItemAnimator : DefaultItemAnimator() {
         }, callCancelOnEnd = true)
     }
 
-    private fun animateMoveImpl(holder: VH, removeAnimationDelay: Long) {
+    private fun animateMoveImpl(holder: VH, animationDurations: AnimationDurations) {
         holder.startAnimation(setup = {
             translationY(0f)
             duration = moveDuration
-            startDelay = removeAnimationDelay
+            startDelay = animationDurations.removeDuration
         }, onCancel = {
             translationY = 0f
         })
@@ -308,7 +308,7 @@ private inline val View.topIncludingMargin get() = top - marginTop
 private inline val View.bottomIncludingMargin get() = bottom + marginBottom
 
 
-data class AnimationDurations(
+class AnimationDurations(
     val removeDuration: Long,
     val changeDuration: Long,
     val moveDuration: Long,
