@@ -296,12 +296,10 @@ public class RelayService extends Service implements IObserver {
         Hotlist.redraw(true);
         ping.scheduleFirstPing();
         BufferList.onServiceAuthenticated();
-        SyncAlarmReceiver.register();
     }
 
     //sync so that goodbye() never happens while state=auth but hello didn't run yet
     @AnyThread @Cat private void goodbye() {
-        SyncAlarmReceiver.unregister();
         BufferList.onServiceStopped();
         ping.unschedulePing();
         P.saveStuff();
