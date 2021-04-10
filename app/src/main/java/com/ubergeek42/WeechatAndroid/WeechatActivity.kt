@@ -51,6 +51,8 @@ import com.ubergeek42.WeechatAndroid.fragments.BufferFragment
 import com.ubergeek42.WeechatAndroid.media.CachePersist
 import com.ubergeek42.WeechatAndroid.relay.BufferList
 import com.ubergeek42.WeechatAndroid.relay.Hotlist
+import com.ubergeek42.WeechatAndroid.relay.Sync
+import com.ubergeek42.WeechatAndroid.relay.syncManager
 import com.ubergeek42.WeechatAndroid.service.Events.ExceptionEvent
 import com.ubergeek42.WeechatAndroid.service.Events.StateChangedEvent
 import com.ubergeek42.WeechatAndroid.service.P
@@ -242,6 +244,7 @@ class WeechatActivity : AppCompatActivity(), CutePageChangeListener, BufferListC
 
     @MainThread @CatD override fun onStart() {
         Network.get().register(this, null)  // no callback, simply make sure that network info is correct while we are showing
+        syncManager.addGlobalFlag(Sync.Flag.ActivityOpen)
         EventBus.getDefault().register(this)
         connectionState = EventBus.getDefault().getStickyEvent(StateChangedEvent::class.java).state
         updateHotCount(Hotlist.getHotCount())
@@ -262,6 +265,7 @@ class WeechatActivity : AppCompatActivity(), CutePageChangeListener, BufferListC
         Network.get().unregister(this)
         CachePersist.save()
         UploadDatabase.save()
+        syncManager.removeGlobalFlag(Sync.Flag.ActivityOpen)
     }
 
     ///////////////////////////////////////////////////////// these two are necessary for the drawer

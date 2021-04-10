@@ -129,26 +129,19 @@ class Buffer @WorkerThread constructor(
     // sets buffer as open or closed
     // an open buffer is such that:
     //     has processed lines and processes lines as they come by
-    //     is synced
     //     is marked as "open" in the buffer list fragment or wherever
-    @AnyThread @Cat @Synchronized fun setOpen(open: Boolean, syncHotlistOnOpen: Boolean) {
+    @AnyThread @Cat @Synchronized fun setOpen(open: Boolean) {
         if (isOpen == open) return
         isOpen = open
-        if (open) {
-            BufferList.syncBuffer(this, syncHotlistOnOpen)
-            lines.ensureSpannables()
-        } else {
-            BufferList.desyncBuffer(this)
-            lines.invalidateSpannables()
-            if (P.optimizeTraffic) {
-                // request lines & nicks on the next sync
-                // the previous comment here was stupid
-                lines.status = Lines.Status.Init
-                nicks.status = Nicks.Status.Init
-                hotlistUpdatesWhileSyncing = 0
-            }
-        }
+        syncManager.setOpen(pointer, open)
+        if (open) lines.ensureSpannables() else lines.invalidateSpannables()
         BufferList.notifyBuffersChanged()
+    }
+
+    fun onDesynchronized() {
+        lines.status = Lines.Status.Init
+        nicks.status = Nicks.Status.Init
+        hotlistUpdatesWhileSyncing = 0
     }
 
     // set buffer eye, i.e. something that watches buffer events
@@ -192,6 +185,8 @@ class Buffer @WorkerThread constructor(
         Assert.assertThat(isOpen).isTrue()
         isWatched = watched
         if (watched) resetUnreadsAndHighlights() else lines.rememberCurrentSkipsOffset()
+        syncManager.setWatched(pointer, watched)
+        syncManager.touch(pointer)
     }
 
     @MainThread @Synchronized fun moveReadMarkerToEnd() {

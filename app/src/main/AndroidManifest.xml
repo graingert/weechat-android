@@ -128,6 +128,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>
+        <receiver android:name=".relay.RelaySyncAlarm" />
         <receiver android:name=".service.SyncAlarmReceiver" />
         <receiver android:name=".relay.Hotlist$InlineReplyReceiver" />
         <receiver android:name=".service.Notificator$NotificationDismissedReceiver" />
