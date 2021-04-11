@@ -7,7 +7,7 @@ import androidx.annotation.AnyThread
 import androidx.annotation.MainThread
 import androidx.annotation.WorkerThread
 import com.ubergeek42.WeechatAndroid.service.Events.SendMessageEvent
-import com.ubergeek42.WeechatAndroid.service.P
+import com.ubergeek42.WeechatAndroid.service.RelayService
 import com.ubergeek42.cats.Kitty
 import com.ubergeek42.cats.Root
 import com.ubergeek42.weechat.relay.protocol.Hdata
@@ -24,9 +24,9 @@ object BufferList {
 
     ////////////////////////////////////////////////////////////////////////////////////// lifecycle
 
-    @JvmStatic @WorkerThread fun onServiceAuthenticated() {
+    @JvmStatic @WorkerThread fun onServiceAuthenticated(service: RelayService) {
         defaultMessageHandlers.forEach { (id, handler) -> addMessageHandler(id, handler) }
-        syncManager.start()
+        syncManager.start(service)
     }
 
     @JvmStatic @AnyThread fun onServiceStopped() {
