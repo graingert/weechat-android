@@ -47,6 +47,8 @@ class BufferListAdapter(
     private var filterLowerCase = ""
     private var filterUpperCase = ""
 
+    init { setHasStableIds(true) }
+
     ////////////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////////// VH
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -146,7 +148,7 @@ class BufferListAdapter(
 
         // store new buffers in _buffers for the sole purpose of doing a diff against, since
         // this method might be called again before buffers is assigned
-        val diffResult = DiffUtil.calculateDiff(DiffCallback(buffers, newBuffers), false)
+        val diffResult = DiffUtil.calculateDiff(DiffCallback(buffers, newBuffers))
         buffers = newBuffers
 
         main {
