@@ -146,10 +146,7 @@ class BufferListAdapter(
             Collections.sort(newBuffers, sortByHotCountAndNumberComparator)
         }
 
-        // store new buffers in _buffers for the sole purpose of doing a diff against, since
-        // this method might be called again before buffers is assigned
         val diffResult = DiffUtil.calculateDiff(DiffCallback(buffers, newBuffers))
-        buffers = newBuffers
 
         main {
             synchronized (updateLock) {
